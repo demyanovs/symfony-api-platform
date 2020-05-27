@@ -36,3 +36,11 @@ php bin/console make:migration
 ````
 php bin/console doctrine:migrations:migrate
 ````
+
+````
+/api/docs.json?spec_version=3
+````
+
+````
+curl -X GET 'https://localhost:8000/api' -H "accept: application/ld+json" | jq
+````
