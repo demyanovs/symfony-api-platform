@@ -53,3 +53,11 @@ make:user
 ````
 php bin/console make:user
 ````
+
+````
+php bin/console doctrine:schema:drop --help
+````
+
+````
+php bin/console doctrine:schema:drop --full-database --force
+````
