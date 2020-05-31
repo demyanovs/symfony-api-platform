@@ -48,3 +48,8 @@ curl -X GET 'https://localhost:8000/api' -H "accept: application/ld+json" | jq
 ````
 php bin/console debug:config api_platform
 ````
+
+make:user  
+````
+php bin/console make:user
+````
