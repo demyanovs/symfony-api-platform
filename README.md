@@ -6,6 +6,11 @@
 composer install
 ```
 
+````
+yarn install
+yarn encore dev --watch
+````
+
 ### Start web server
 
 ```
