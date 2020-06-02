@@ -67,6 +67,10 @@ php bin/console doctrine:schema:drop --help
 php bin/console doctrine:schema:drop --full-database --force
 ````
 
+````
+php bin/console security:encode
+````
+
 ## Based on symfonycasts tutorials  
 1. <a href="https://symfonycasts.com/screencast/api-platform">API Platform: Serious RESTful APIs</a>
 2. <a href="https://symfonycasts.com/screencast/api-platform-security">API Platform Part 2: Security</a>
