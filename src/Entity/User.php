@@ -11,6 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -18,7 +19,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     accessControl="is_granted('ROLE_USER')",
  *     collectionOperations={
  *          "get",
- *          "post"={"access_control"="is_granted('IS_AUTHENTICATED_ANONYMOUSLY')"},
+ *          "post"={
+ *              "access_control"="is_granted('IS_AUTHENTICATED_ANONYMOUSLY')",
+ *              "validation_groups"={"Default", "create"}
+ *          },
  *     },
  *     itemOperations={
  *          "get",
@@ -52,13 +56,13 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="json")
+     * @Groups({"user:write"})
      */
     private $roles = [];
 
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
-     * @Groups({"user:write"})
      */
     private $password;
 
@@ -75,6 +79,19 @@ class User implements UserInterface
      * @Assert\Valid()
      */
     private $cheeseListings;
+
+    /**
+     * @Groups("user:write")
+     * @SerializedName("password")
+     * @Assert\NotBlank(groups={"create"})
+     */
+    private $plainPassword;
+
+    /**
+     * @ORM\Column(type="string", length=50, nullable=true)
+     * @Groups({"admin:read", "user:write"})
+     */
+    private $phoneNumber;
 
     public function __construct()
     {
@@ -156,7 +173,7 @@ class User implements UserInterface
     public function eraseCredentials()
     {
         // If you store any temporary, sensitive data on the user, clear it here
-        // $this->plainPassword = null;
+        $this->plainPassword = null;
     }
 
     public function setUsername(string $username): self
@@ -193,6 +210,30 @@ class User implements UserInterface
                 $cheeseListing->setOwner(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getPlainPassword(): ?string
+    {
+        return $this->plainPassword;
+    }
+
+    public function setPlainPassword(string $plainPassword): self
+    {
+        $this->plainPassword = $plainPassword;
+
+        return $this;
+    }
+
+    public function getPhoneNumber(): ?string
+    {
+        return $this->phoneNumber;
+    }
+
+    public function setPhoneNumber(?string $phoneNumber): self
+    {
+        $this->phoneNumber = $phoneNumber;
 
         return $this;
     }
